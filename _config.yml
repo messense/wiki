@@ -1,0 +1,8 @@
+markdown: rdiscount
+permalink: /:categories/:title.html
+url: http://wiki.messense.me
+title: Messense's Wiki
+author: messense
+keywords: messense,乱了感觉,wiki
+description: messense's wiki
+googleAnalyticsID: 
