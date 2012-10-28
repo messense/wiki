@@ -1,4 +1,6 @@
-markdown: rdiscount
+auto: true
+server: true
+server_port: 4000
 permalink: /:categories/:title.html
 url: http://wiki.messense.me
 title: Messense's Wiki

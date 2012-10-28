@@ -1,0 +1,32 @@
+<!DOCTYPE HTML>
+<html lang="en">
+	<head>
+		<title>{% if page.title %}{{ page.title }} - {{site.title}}{% else %}{{ site.title }}{% endif %}</title>
+		<meta charset="utf-8" />
+		<meta name="author" content="{{ site.author }}"/>
+		<meta name="keywords" content="{{ site.keywords }}" />
+		<meta name="description" content="{{ site.description }}" />
+		<link href='http://fonts.googleapis.com/css?family=Mate+SC' rel='stylesheet' type='text/css'>
+		<link rel="stylesheet" type="text/css" href="/assets/css/style.css" />
+		<link rel="stylesheet" type="text/css" href="/assets/css/highlight.css" />
+	</head>
+	<body>
+		<div id="container">
+			<div id="sidebar">
+				<div id="menu-nav">
+					<div id="logo"><a href="/">{{ site.title }}</a></div>
+					<ul>
+
+					</ul>
+					<ul class="misc">
+						<li>Powered by <a href="http://pages.github.com/">Github Pages</a></li>
+					</ul>
+				</div>
+			</div>
+			<div id="content">
+				{{ content }}
+			</div>
+		</div>
+		<!---<script type="text/javascript" src="/assets/js/jquery.min.js"></script>-->
+	</body>
+</html>
