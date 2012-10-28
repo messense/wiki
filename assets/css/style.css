@@ -7,7 +7,7 @@ body {
 }
 
 body, input, textarea, select {
-	font: 12px 'Lucida Grande', 'Lucida Sans Unicode', 'Microsoft YaHei', 'Helvetica Neue', Verdana, serif;
+	font: 12px 'Hiragino Sans GB', 'Helvetica Neue', Helvetica,'Lucida Grande', 'Lucida Sans Unicode', 'Microsoft YaHei', Verdana, serif;
 }
 
 a {
@@ -29,16 +29,17 @@ pre, pre code {
 	word-wrap: break-word;
 }
 pre { margin-left: 40px; }
-blockquote { margin-right: 0; }
+blockquote {
+	margin-left: 20px;
+	border-left: 5px solid #eee;
+}
 blockquote p {
 	display: block; 
-	font:12px "Microsoft Yahei", Consolas, Monaco, monospace; 
+	font:12px 'Hiragino Sans GB', 'Helvetica Neue', Helvetica, Consolas, Monaco, monospace; 
 	line-height: 1.5em;
 	padding: 10px 20px; 
-	/*background: #D6D6D6;*/
+	background: #f6f6f6;
 	color: #666; 
-	/*border-top: 1px solid #B2B7B7;*/
-	font-style: italic;
 }
 li { padding: 5px 0; }
 
