@@ -13,7 +13,6 @@ title: Web 开发
 * [Image Accordion](http://tympanus.net/codrops/2012/06/06/image-accordion-with-css3/) - Image Accordion with CSS3
 * [CSS3 transform中的Matrix](http://www.zhangxinxu.com/wordpress/2012/06/css3-transform-matrix-%E7%9F%A9%E9%98%B5/) - 理解CSS3 transform中的Matrix(矩阵)
 * [Timed Notifications](http://tympanus.net/codrops/2012/06/25/timed-notifications-with-css-animations/) - Timed Notifications with CSS Animations
-* [让IE浏览器支持HTML5元素](http://www.zhangxinxu.com/wordpress/2012/07/no-javascript-ie-html5-elements/) - 不使用JavaScript让IE浏览器支持HTML5元素
 * [Block Quote Styles](http://tympanus.net/codrops/2012/07/25/modern-block-quote-styles/) - Modern Block Quote Styles
 * [CSS学习中的瓶颈](http://www.zhangxinxu.com/wordpress/2012/07/bottleneck-css-study/) - 说说CSS学习中的瓶颈
 * [CSS3字体](http://yuguo.us/weblog/css3-font-mime-type/) - CSS3字体的MIME TYPE
@@ -27,3 +26,8 @@ title: Web 开发
 * [“更多|收起”交互](http://www.zhangxinxu.com/wordpress/2012/10/more-display-show-hide-tranisition/) - “更多|收起”交互中渐进使用transition动画
 * [Navigation Menu](http://tutorialzine.com/2012/10/css3-dropdown-menu/) - CSS3 Animated Navigation Menu
 * [Ready-to-Use](http://tympanus.net/codrops/2012/10/23/basic-ready-to-use-css-styles/) - Basic Ready-to-Use CSS Styles
+
+## 浏览器兼容
+
+* [让IE浏览器支持HTML5元素](http://www.zhangxinxu.com/wordpress/2012/07/no-javascript-ie-html5-elements/) - 不使用JavaScript让IE浏览器支持HTML5元素
+* [视网膜New iPad与普通分辨率iPad页面的兼容处理](http://www.zhangxinxu.com/wordpress/2012/10/new-pad-retina-devicepixelratio-css-page/)
