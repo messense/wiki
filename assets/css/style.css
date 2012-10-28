@@ -43,10 +43,10 @@ blockquote p {
 li { padding: 5px 0; }
 
 #container { 
-	width: 1200px;
+	width: 100%;
 }
 
-#sidebar { float: left; width: 210px; padding: 20px 20px; color: #EEE; }
+#sidebar { float: left; width: 25%; color: #EEE; }
 #sidebar ul { list-style: none; padding-left: 0; margin-top: 2px; }
 #sidebar ul li { font: 13px; font-weight: bold; }
 #sidebar ul li ul { padding-top: 5px; padding-bottom: 5px; list-style: circle; padding-left: 35px; }
@@ -63,16 +63,17 @@ li { padding: 5px 0; }
 
 #logo a { color: #fff; }
 #logo a:hover { color: #ccc; }
+#menu-nav { padding: 20px; }
 
 #content {
 	float: left;
 	margin: 0;
-	width: 790px;
-	padding: 0 30px 30px;
+	width: 75%;
 	background: #F9FBFB url(/assets/images/body-bg.png); 
 	color: #444; 
 	box-shadow: 0px 0px 25px #21292E;
 }
+#content .wrap { padding: 0 30px 30px; }
 #content p { line-height: 1.8em; }
 #content h3 span.misc { font-size: 12px; font-weight: normal; }
 #content ul { 
