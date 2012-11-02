@@ -31,3 +31,14 @@ title: Web 开发
 
 * [让IE浏览器支持HTML5元素](http://www.zhangxinxu.com/wordpress/2012/07/no-javascript-ie-html5-elements/) - 不使用JavaScript让IE浏览器支持HTML5元素
 * [视网膜New iPad与普通分辨率iPad页面的兼容处理](http://www.zhangxinxu.com/wordpress/2012/10/new-pad-retina-devicepixelratio-css-page/)
+
+## JavaScript
+
+* [高级 JavaScript 编程](http://blog.eood.cn/advanced_javascript) - 高级 JavaScript 编程原理和一些总结
+* [ECMAScript 5中bind方法](http://www.zhangxinxu.com/wordpress/2012/10/ecmascript-es5-bind-array-slice-call-apply/) - ECMAScript 5(ES5)中bind方法、自定义及小拓展
+
+## jQuery
+
+* [jQuery Mobile 方法 - 上](http://kayosite.com/web-app-by-jquery-mobile-and-html5-methods-part-one.html) - 使用 jQuery Mobile 与 HTML5 开发 Web App —— jQuery Mobile 方法上
+* [jQuery Mobile 方法 - 下](http://kayosite.com/web-app-by-jquery-mobile-and-html5-methods-part-two.html) - 使用 jQuery Mobile 与 HTML5 开发 Web App —— jQuery Mobile 方法下
+* [jQuery File Upload](http://avnpc.com/pages/single-file-upload-component-by-jquery-file-upload) - 定制jQuery File Upload为微博式单文件上传
