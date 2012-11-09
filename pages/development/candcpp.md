@@ -14,3 +14,6 @@ title: C and C++
 5. [从 MVC 开始模块化编程（下）](/candcpp/ghost-c-lang-3-3.html)
 6. [从 goto 说起](/candcpp/ghost-c-lang-4.html)
 7. [你这个“死”循环](/candcpp/ghost-c-lang-5.html)
+8. [数组，指针，字符串（上）](/candcpp/ghost-c-lang-6-1.html)
+9. [数组，指针，字符串（中）](/candcpp/ghost-c-lang-6-2.html)
+10. [数组，指针，字符串（下）](/candcpp/ghost-c-lang-6-3.html)

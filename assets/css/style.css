@@ -83,7 +83,8 @@ li { padding: 5px 0; }
 	width: 75%;
 	min-height: 580px;
 	background: #F9FBFB url(/assets/images/body-bg.png); 
-	color: #444; 
+	color: #444;
+	font-size: 14px;
 	box-shadow: 0px 0px 25px #21292E;
 }
 #content .wrap { padding: 0 30px 30px; }
