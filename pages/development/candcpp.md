@@ -17,3 +17,5 @@ title: C and C++
 8. [数组，指针，字符串（上）](/candcpp/ghost-c-lang-6-1.html)
 9. [数组，指针，字符串（中）](/candcpp/ghost-c-lang-6-2.html)
 10. [数组，指针，字符串（下）](/candcpp/ghost-c-lang-6-3.html)
+11. [任意存储空间结构的设计](/candcpp/ghost-c-lang-7.html)
+12. [完善MVC的DEMO，闲话MAKEFILE](/candcpp/ghost-c-lang-8.html)

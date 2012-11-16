@@ -9,6 +9,10 @@ title: Mac OS X
 
 * [Homebrew](http://mxcl.github.com/homebrew/) - The missing package manager for OS X
 * [MacPorts](http://www.macports.org) - An open-source community initiative to design an easy-to-use system for compiling, installing, and upgrading either command-line, X11 or Aqua based open-source software on the Mac OS X operating system.
+* [pythonbrew](https://github.com/utahta/pythonbrew) - Mac python 多版本管理器
+  * [pythonbrew 中文文档](http://pythonbrew.readthedocs.org/en/latest/)
+* [rvm](http://rvm.io) - Ruby 多版本管理器
+* [rbenv](https://github.com/sstephenson/rbenv) - 与 rvm 类似的 Ruby 多版本管理器
 
 ## 输入法
 

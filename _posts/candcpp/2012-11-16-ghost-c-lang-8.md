@@ -1,0 +1,414 @@
+---
+layout: post
+category: candcpp
+title: 完善MVC的DEMO，闲话MAKEFILE
+---
+
+# 完善MVC的DEMO，闲话MAKEFILE
+
+不得不说一句，从开始，到现在，我不得不忍受着无法使用make MAKEFILE的折磨。而如果从开始到现在，所有的例子你都亲自敲过诸如如下的命令： 
+
+    gcc -Wall attr.c value.c view.c control.c model.c -o attr 
+
+你或许会对C语言编程丧失信心。你甚至可能会出现一个代码编译的错误。当你敲入 
+
+    gcc -Wall attr.c value.c view.c model.c -o attr 
+
+链接会有问题。这些手工的小失误，带来的都是麻烦事。还有更麻烦的。如果我们有100个C文件整合起来的工程。不算多，真的。如果改动一个文件，也按照上面的方式及执行，就会很慢。特别是debug的时候，思路往往在你上次厕所后就容易断掉。尝试几种测试方法，迅速观测结果，对于某些类型的测试是需要的。而debug也经常需要反复的修改和编译链接。 
+
+一种好的做法，是我们先编译，把对象文件保存，当出现某个具体文件修改后，可以只对这个文件进行编译，而其他文件没必要处理，然后由此对此次以及上次生成的没有改变对应源码的对象文件一起链接。编译相对链接，是个比较慢的工作。由此在你只改动control.c前后你可以如下操作。 
+
+没改动control.c前，我们可以 
+
+    gcc -Wall -c attr.c value.c view.c control.c model.c 
+
+以上由于有了-c所以是多所有的C文件进行编译，生成同名的，后缀为.o的对象文件。 
+
+    gcc attr.o value.o view.o control.o model.o -o attr 
+
+这是将所有的对象文件作为资源，链接生成一个attr的执行文件。 仅改动了control.c，那么我们可以 
+
+    gcc -Wall -c control.c 
+    gcc attr.o value.o view.o control.o model.o -o attr 
+
+但这样也带来个问题。很多情况下，经常出现你实际改动的文件，并没有被编译，而原先的.o文件也存在。上述工作都不会报错，而且你的改动并没有被执行程序所体现。通常的情况，你会彻底崩溃，为什么左改右改，就是没变化。 
+
+这里提到一个新的参考文献 6. 《gun make 中文手册》 徐海兵 译。 我不认识他，哈。不过难得我推荐一本中文书籍。理由如下： 
+
+1. 这书即便有人认为翻译的烂，但多少对你学习make足以，没觉得有什么翻译不足导致影响原理，概念理解的地方。 
+2. make 更是个工具。主要是拿来用的。除非整天折腾makefile的人，相信我，通常你每3个月，才组织设计一次makefile，那么原理和概念的东西，还是会有失忆性遗漏，快速用起来这是关键。这和C标准资料还不一样。后者。原理理解的一些偏差，可能导致代码涉及的很大改动。 
+
+推荐gun make 中文手册 。但不会如同其他参考文献一样，给出章节出处，做详细阐述，是希望你该养成，自己通读资料的习惯，而不是别人告诉你，具体哪页，哪行的保姆时学习。 因此，我不会给出任何参考文献 6的引用，当然绝对不是对徐海兵的冒犯及不信任。 
+
+>鬼话：如果你说你会写C程序，而不会用make，拜托，千万别出去拿C的招牌说事了。丢人，而且丢大了。 
+
+这里先说说make的精髓。我认为有以下几个方面。 
+
+1. 文件敏感性。也即，当make工作，会对文件是否修改很敏感。于是，你可以丢给他一堆文件，当这些文件被更新时，它是可以根据规则，进行有选择的处理。 
+2. 依赖，这种依赖，你可以理解成因果关系。甚至可以理解成触发事件的响应。这可比一般的脚本要爽太多。 
+3. 规则。这是编程序的一个境界。突出强调规则，如同数学突出强调逻辑关系，而不是强调具体数值一样。 
+4. 脚本化。灵活的组织逻辑，而不是呆板的一行行的解释执行规则。 
+
+鬼话：为什么说make是这么好的东西。如果你认为某个应用程序或者linux的创始人算大牛，确实是大牛，那么make可以说是一堆历史上的大牛，在经历过痛苦后，努力创造出来的东西。任何赞美之词，如果你用在其他应用软件或工具上，make都值得同等对待。C语言，除了自身在代码性能，底层开发上可以超越其他高级语言外，原生的make操作，也足以让一个C程序员，藐视其他夸夸其谈某个IDE多么人性化的程序员，因为大多数你看到的IDE，后台都藏着make，make不单单为C语言服务，无非C程序员当然也包括C++程序员经常直接面向make。不是我在激起语言和程序员的类别之争。make 的设计，思想，对比现在很多什么架构，框架，要高明的多。虽然你看它是非常简单和朴素的。相信我，make的熟练使用后，你一定会有对C语言设计脱胎换骨的感觉，无论你在那个操作系统下。当然make这不是本书的重点，具体的学习，需要系统的看对应的资料，包括上面推荐的那本，此处仅介绍如何简单的应用，以降低我们现有C语言设计中的开发负担。 
+
+先说说make的操作。通常就是个简单的 
+
+    make 
+
+命令。make程序，会自动查找配置文件。也是传说中的makefile，这算惯例，或潜规则。或者你可以 
+
+    make -f filename 
+
+filename 是一个任意文件。 
+
+但不是潜规则要求的文件名。这样做通常用于临时性的make使用，正式情况，不需要如此折腾。潜规则有个好处，你被潜规则了，其他人也会被潜规则。这样降低你和其他人的交流成本。 
+
+由此，另一个做法是将你的计划，写在名为 GNUmakefile ,makefile ,Makefile这几种文件名中任意一个。恩。make的潜规则文件名也有几种写法。但潜规则中的潜规则是，我们都用Makefile。如果老师考你 make的潜规则，都可以识别哪几个文件名，他们的依次顺序时，你可以毫不犹豫的向他竖中指。他如果问哪学的，你可以说是野鬼教的，因为他没有说是那个版 本的make。不过竖归竖，为了防止意外，你还是要知道，GNU make是按照GNUmakefile ,makefile ,Makefile依次进行查找的，同时尽可能的确保你的目录下只有Makefile一个文件。 
+
+需要特别说明的是，GNUmakefile人如其名，只有GNU make可以识别，make也有不同的版本和来源和C的编译器一样，只不过linux上用GNU make的还是比较多。但仍然建议使用 Makefile这个文件名。 
+
+有了潜规则，你就不需要如此写 
+
+    $make Makefile 
+
+直接 make会查找。那么我们先做第一个例子。你将下面的内容，保存为Makefile这个文件在./attr这个目录下 
+
+{% highlight makefile %}
+what: 
+    gcc -Wall -c ./attr.c ./control.c ./view.c ./value.c ./model.c 
+    gcc ./attr.o ./control.o ./view.o ./value.o ./model.o -o attr 
+heihei: 
+    rm *.o
+{% endhighlight %}
+
+注意两个书写问题 
+
+1. what需要顶头写，表示一个操作的开始，用此来直接区分不同操作的描述范围 
+2. gcc等实际操作的内容前面需要空一个tab。 
+
+>鬼话：“操作”只是我的口头语，官方的说法叫“规则的目标”，我只是希望新手理解实际就是一个操作，而且操作里面可以有很多命令 依次组成依次执行，而且make一次只会对一个操作进行操作，除非其他操作和这个操作有依赖关系。但操作通常都是有操作的结果（输出的文件），所以叫规则 的目标 
+
+>鬼话：“顶头写”除了描述“规则的目标”外，还有很多其他顶头写的事情，因此，不单单要顶头写，你还需要加上个‘：’,这样，make就可以知道，顶头写，同时存在一个‘：’则是一个操作的开始，也就是“规则的目标”。 
+
+>鬼话：关于"what",我实在想不出什么名词，能说明“规则的目标”有什么特殊的命名方式。用what是希望大家理解，规则的目标的名字，并没有什么特殊约束，你爱怎么写怎么写，但存在一些潜规则和make的规矩会让你吃苦头，只是我在边上 “what,写这个例子时，我确实在what,heihei"。比如通常,heihei应该用 clean来实现。同时，你执行如下命令 
+
+    make 
+    make what 
+    make clean 
+
+ 你会发现，make没有后面的参数时，执行了what。不是因为what的单词字幕更少。而是因为what是第一个规则。因此，通常你需要将最常用的，当然 未 必是build操作，放在第一个。这样可以简化你的操作。直接make就可以。但这个最常用的，与你和你的开发小组第一直觉希望make做什么有关系。通常程 序员之间会说“这样这样后，make一下”而不会解释make what。 
+
+>你问“make what?" 
+>同事说：“对就是make what!" 
+>"make what what 啊？” 
+>“就是make what 啊，你what 什么 what 啊？” 
+
+这说明两个问题，第一，make的第一个规则，尽可能是你们小组的共识常用工作，第二，命名很重要。你和你的同伙"what"来“what"去，最多相互 怀疑智商问题。但如果你起名叫“love",然后和你的女同事说，记得make love一下。当心她告你性骚扰。 
+
+现在你已经发现make 针对Makefile有第一个好处了。就是批处理化。算是脚本的一种功能体现吧。不过你反复的执行 
+
+    make what 
+
+系统会机械呆板的毫无保留的进行执行。如果我们只想执行那些被改变的呢？你可以尝试如下方式：
+
+{% highlight makefile %} 
+what: ./control.c 
+    gcc -Wall -c ./attr.c ./control.c ./view.c ./value.c ./model.c 
+    gcc ./attr.o ./control.o ./view.o ./value.o ./model.o -o attr 
+{% endhighlight %}
+
+保存，我们再执行两边make。或者make what。 
+
+现在回到haha上。继续make haha ,两边，恩，你会发现和前面一样。没错。我们再换一下 
+
+{% highlight makefile %}
+./control.o:./control.c 
+    gcc -Wall -c ./attr.c ./control.c ./view.c ./value.c ./model.c 
+    gcc ./attr.o ./control.o ./view.o ./value.o ./model.o -o attr    
+clean: 
+    rm *.o
+{% endhighlight %}
+
+我们再make，此时make会提示，./contorl.o是最新的了。没有必要处理。这是因为make会根据目标,./control.o的依赖，./control.c来判断，是否需要对目标进行重新处理。如果依赖没有被更新过，那么目标对应的处理，就是下面的两个gcc命令，则不会进行。这样好处是显而易见的。你对应的C文件没有更新，何必处理呢？ 
+
+你此时，将control.c的第一行，加次回车，意思是让文件多个空白行。保存，再 make .此时，gcc又被运行了。怎么样？让make帮你查找当前那些文件被改动了，很方便，很贴心吧。不过此时又有个问题，你尝试将model.c同样加上一个空白行，保存，再 make .结果提示，已是最新文件。没办法，确实如此啊，你的依赖规则只提到了control.c，而你的目标是./control.o，无非目标下的执行，你做了很多.o的生成，和最终attr执行程序的链接。同样的错误会发生在你修改control.h。make会查找依赖的文件的更新情况。但是不会启动C的预编译系统来判断，其所#include的文件是否更新。 
+
+你可以尝试 
+
+    make 
+    make clean 
+    make 
+
+此时，clean会删除掉所有的.o文件，所以第二次make又再次运行。因此make除了看依赖是否改变，还会看目标是否存在。由此引发一个问题。你尝试 
+
+    make 
+    rm attr 
+    make 
+
+怎么样？第二次make不工作了。因为./control.o确实存在啊。即便./attr被删除了。但和目标生成的依赖没有关系。和目标也没关系。虽然你的批处理的最终目标是./attr。但是make 的默认操作是看./control.o由此你需要注意，考虑一个现实，最终编译链接，是做什么事情？通常我们将编译链接的工作称为build。区别于强制工作 rebuild，即便所有的文件没有被更新，也将所有的文件进行重新操作。由此我们可以如下写： 
+
+{% highlight makefile %}
+control.o:./control.c ./control.h 
+    gcc -Wall -c ./control.c 
+./value.o:./value.c ./value.h 
+    gcc -Wall -c ./model.c 
+./model.o:./model.c ./value.h 
+    gcc -Wall -c ./model.c 
+./view.o:./view.c ./value.h 
+    gcc -Wall -c ./view.c 
+./attr.o:./attr.c ./value.h 
+    gcc -Wall -c ./attr.c 
+build:./control.o ./value.o ./model.o ./view.o ./attr.o 
+    gcc ./attr.o ./control.o ./view.o ./value.o ./model.o -o attr    
+rebuild: 
+    clean 
+    build 
+clean: 
+    rm *.o
+{% endhighlight %}
+
+我们运行一下 
+
+    make clean 
+    make 
+
+哦，第一次单独的make会出来一个 
+
+    gcc -Wall -c ./control.c 
+    make build 
+
+哦。有一堆 gcc -Wall，还有一个错误，提示，没有value.o这个文件。导致无法链接。还是那句 
+
+>鬼话：我尽可能教错的，这样你才知道，对的有什么价值。与其挨老师的板子说你不努力死记硬背，不如到我野鬼的坑里摔一摔，锻炼个强健筋骨。 
+
+如果你再运行make rebuild 会提示，找不到clean .如果你再次运行 make build 则仍然会继续执行，不在乎是否.o存在，C文件是否被更新。 
+
+即便你更新 define_attr.h，对于model.o仍然无动于衷。你忘了在./model.o的依赖中增加这个文件了嘛。 
+
+上面这个情况说明了几个问题： 
+
+1. make 仍然是针对第一个规则目标进行默认处理。 
+2. make build 依次检测.o文件这些目标，并根据.o文件启动对应的目标的执行。 
+3. 你会发现，./value.o:的实际执行书写不当，导致没有去完成./value.o的生成，而是做了model.o的工作。 
+4. clean我确实写了，为什么找不到？ 
+5. 很多依赖好烦人，难道我们需要根据C代码一个个找头文件？你忘了在./model.o的依赖中增加这个文件了嘛。 
+6. make build总在执行。正常，build看成了一个目标。而这个目标并不是文件，则make始终认为这个目标需要执行。 
+
+针对第一个问题，如果你反复debug时，需要尽可能的将所有的编译，并链接，那么build是需要作为默认规则。因此我们需要把build调整到第一个位置。 
+
+第二第三个问题是，该死的规则依赖的书写方式，还是麻烦和容易书写出错。我们可以使用通配符和自动化变量来设计一个通用处理方法。如下 
+
+{% highlight makefile %}
+%.o:%.c 
+    gcc -Wall -c $< $@
+{% endhighlight %}
+
+%表示一个通配符。这只能正对 x.o ,而不会针对x.p.o等情况。 
+
+%.o:%.c 表示，任意文件名，后缀为.c的，为依赖，对应的目标文件是同名的文件名，后缀为.o，我们使用同样一个规则。 
+
+$< 表示规则的依赖，$@表示规则的目标。其实你更本不需要写这个内容，make也隐藏了这个默认规则。无非默认的情况并没有没用-Wall 
+     
+第四个问题是，为什么rebuild的操作找不到clean。很简单,clean是个操作规则，你可以理解成一个函数调用另一个函数，而不是具体的执行语句，当然切记clean并不是个函数，因此你应当把clean作为一个依赖放到rebuild 之后，而不是作为操作。clean不是磁盘文件，此时make 在磁盘上寻找clean自然找不到。这还只是个故事，如果想让故事增加点悬疑，你可以让磁盘上真有个叫clean的文件。这种情况下，如果仅是个操作，而不是文件，那么你需要用.PHONY来说明一下。 
+
+第5个问题，我们可以借助gcc的一个工作， -MM，其目的是，对C文件进行分析，列出其依赖的头文件是什么。你可以执行如下命令 
+
+    gcc -M model.c 
+    gcc -MM model.c 
+
+看一下 ,上述两个参数的差异。为了省省屏幕，通常还是-MM吧，他可以忽略默认的头文件位置，也即那些 <>内的头文件。除非你需要检查<>内的头文件是否路径引用正确。否则 -MM是首选。此时gcc给自动给你打印出依赖，只不过在屏幕上。你完全可以将其输出在一个文件里。如下： 
+
+    gcc -MM model.c > model.d 
+
+我们可以在Makefile 里 增加 
+
+    sinclude model.d 
+
+这基本等同于C语言里的#include。将model.d的内容增加到当前Makefile中进行分析，执行。 
+
+第6个问题，一个简单的方法如下，我们可以让build的依赖是最终的执行文件。而最终的执行文件作为一个目标，其依赖各种.o如下 
+
+    build: attr 
+    attr:./control.o ./value.o ./model.o ./view.o ./attr.o 
+
+因此我们的Makefile可以如下设计 
+
+{% highlight makefile %}
+build:attr 
+attr:%.o 
+    gcc ./attr.o ./control.o ./view.o ./value.o ./model.o -o attr    
+rebuild: 
+    clean 
+    build     
+clean: 
+    rm *.o *.d 
+include view.d model.d value.d attr.d control.d 
+%.o :%.c %d 
+    gcc -Wall -c  $< -o $@     
+.PHONY: rebuild clean build
+{% endhighlight %}
+
+不过这样还是麻烦，因为你需要手工把所有的.d文件进行生成才能使用,而且你会发现源代码的文件名被使用了很多地方，无非是后缀有.d,有.o,虽然我们使用%.o做了个通配符的.o依赖，让所有当前能找到.o都加入进来，但仍然是麻烦。一个简单清爽的做法如下
+
+{% highlight makefile %}
+CFLAG := -Wall -c
+CC := gcc
+sources = model.c view.c attr.c control.c value.c
+build:attr
+%.o :%.c
+    $(CC) $(CFLAG) $< -o $@
+%.d: %.c
+    $(CC) -MM  $< > $@.$$$$; \
+    sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; \
+    rm -f $@.$$$$
+sinclude $(sources:.c=.d)
+
+attr:$(sources:.c=.o)
+    gcc $^ -o $@
+    
+clean:
+    -rm  %.o %.d
+rebuild:clean build
+        
+.PHONY:rebuild clean build 
+{% endhighlight %}
+
+注意几个问题 
+
+1. $< ,$@，$^详细信息，你需要参考文献 6，他们是自动化变量。 
+2. %，和*的差异，也需要仔细阅读参考文献 6 。 
+3. sinclude 可以引入一批文件。 
+4. rm之前多了个 -,意思是如果这是个错误执行，则忽略，而不是make中断。你觉得没用？那你将 -rm %.o删除掉。然后尝试执行以下命令 make clean 和 make rebuild .没有.o文件，好事啊，难道就不能继续build吗？make对实际的执行命令，如果出错就停止了。还是安心加上 -吧，如果有些执行不在乎其是否正常，rm是典型的例子。 
+5. %d:%c后面执行的是什么意思？你在参考文献6中同样可以找到。这里还引入了变量的概念。 
+
+>鬼话：变量是个好东西，你可以和C语言中的#define近似理解。不过还是有些区别，在展开的时候。同时特别诸如CC，CFLAG这些变量，属于隐含的变量。本身系统会有一定默认的含义，上面这样的做法，是重新书写定义，不要乱表示其他内容。多看看书是有好处的。 
+
+针对上面的内容，基本上你可以直接根据C文件的列表，也即你修改sources的后续内容进行自动化编译了。包括依赖的自动生成。当然你完全可以如下操作，毕竟gcc -MM的内容，通常不重要，看这也眼花。 
+
+{% highlight makefile %}
+%.d: %.c 
+     @set -e; rm -f $@;\ 
+    $(CC) -MM $(CFLAGS) $< > $@.$$$$;\ 
+    sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@;\ 
+    rm -f $@.$$$$ 
+{% endhighlight %}
+
+>鬼话：上面这些内容该怎么解释。我说了。多半你也忘，不如你自己查资料。与其google一下，不如找到shell的相关书籍寻找答案。我希望从告诉你什么资料，多少页多少行，最初级阶段开始，到我告诉你这本书，你自己找，到你自己去寻找一本书，找到相关内容，这么延伸的提升你自主查找资料的能力。别抱怨我懒，我勤快了，你就懒。我懒，你就有机会勤快了。
+
+现在你看看你的attr目录下，都有什么。恩。一堆堆的文件，特别是.c .h .o文件。这才几个C文件的小程序啊。就搞这么复杂。通常，我们会分目录。分目录，在很多开发风格下，喜欢这么做：
+
+1. 所有的C文件，在一个目录。通常叫src
+2. 所有的H文件，在一个目录。通常叫inc
+3. 所有的O文件，在一个目录。通常叫obj
+4. 所有的私有库库文件，在一个目录，通常叫lib
+5. 对应私有库的外部头文件，在一个目录，通常叫include
+6. 实际执行链接文件，在一个目录，通常叫bin
+
+我们先在当前attr目录下创建src ,inc,obj ,bin四个文件夹。当然Makefile文件仍然保留在当前目录下。余下你将所有c文件放在src里，h文件放在inc里，其他文件？恩。就这样删掉吧。
+
+由此我们引发了两个问题。.h文件，我们是#include ""的。而且并不在系统（环境变量）所指定的目录下，此时，编译时，如何查找到这些文件。因此我们 需要用gcc的一个参数 。-I （大写的i），而目录，需要随后没有空格的引用。由于Makefile在attr,我们的h文件在当前目录的inc子目录下。
+
+同时C文件不在和Makefile的同目录下，还记得我们当初在Makefile里是./model.c等等吗？你完全可以写./src/model.c。当然我们可以使用自动扩展。
+
+因此可以如下写
+
+{% highlight makefile %}
+CFLAG := -Wall -c -Iinc
+CC := gcc
+VPATH = ./src 
+sources = model.c view.c attr.c control.c value.c 
+build:attr
+%.o :%.c
+    $(CC) $(CFLAG) $< -o $@
+%.d: %.c
+    @set -e; rm -f $@;\
+    $(CC) -MM $(CFLAG) $< > $@.$$$$;\
+    sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@;\
+    rm -f $@.$$$$
+sinclude $(sources:.c=.d)
+
+attr:$(sources:.c=.o)
+    gcc $^ -o $@
+    
+clean:
+    -rm  *.o *.d
+rebuild:clean build
+        
+.PHONY:rebuild clean build
+{% endhighlight %}
+
+我们对gcc 设计到需要使用头文件的，例如依赖生成，以及编译工作，需要增加 -Iinc的选项。当然此处只是在CFLAG后进行了增加。同时使用了VPATH作为一个依赖目录搜索的使用。你可以在参考文献 6中找到对应的用法和理由。
+
+>鬼话：但有点需要非常明确的，虽然一些make的辅助自动化操作值得我们使用，不过需要基于一点前提，准确。上面使用VPATH,会先从当前目录下查找C文件，你尝试在当前目录下，也保存一份model.c试试？别说你保持清醒的大脑。相信我，通常反复编译链接发生在debug时，通常反复debug时，你的大脑一定对工程环境没有清醒的认识，除非你还没有进入debug状态。
+
+一个更好的建议，就是指明C文件的路径。当然针对Makefile的相对路径就可以。没必要那么较真，使用绝对路径。
+
+{% highlight makefile %}
+CFLAG := -Wall -c -Iinc
+CC := gcc
+SRC_PATH = ./src/
+MODULE_FILE = model.c view.c attr.c control.c value.c 
+sources = $(addprefix $(SRC_PATH),$(MODULE_FILE))
+build:attr
+./obj/%.o :%.c
+    $(CC) $(CFLAG) $< -o $@
+%.d: %.c
+    @set -e; rm -f $@;\
+    $(CC) -MM $(CFLAG) $< > $@.$$$$;\
+    sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@;\
+    rm -f $@.$$$$
+sinclude $(sources:.c=.d)
+
+attr:$(sources:.c=.o)
+    gcc $^ -o $@
+    
+clean:
+    -rm  *.o *.d
+rebuild:clean build
+        
+.PHONY:rebuild clean build
+{% endhighlight %}
+
+你可以学习一下addprefix的函数使用方法。此时，你make后，即便修改了当前目录下的model.c的文件，再次执行make，则仍然会显示，没有更新，因为你的Makefile仅针对src目录下的C文件进行处理。出于同样的理由，实际需要编译的C文件，均在MODULE_FILE里显示的描述出来。虽然这样当你新增C文件时，繁琐，但是便于你的开发时对模块的文件有所了解。那种自动化的MK的操作，我们将在第四部分进行说明。此处暂且不谈。
+
+现在还有两个遗留问题。.o文件并没有进入obj中，最终生成文件并没有进入bin中。那么我们可以调整如下：
+
+{% highlight makefile %}
+CFLAG := -Wall -c -Iinc
+CC := gcc
+SRC_PATH = ./src/
+OBJ_PATH = ./obj/
+BIN_PATH = ./bin/
+MODULE_FILE = model view attr control value 
+MODULE_SRC = $(addsuffix .c,$(addprefix $(SRC_PATH),$(MODULE_FILE)))
+MODULE_OBJ = $(addsuffix .o,$(addprefix $(OBJ_PATH),$(MODULE_FILE)))
+MODULE_DEP = $(addsuffix .d,$(addprefix $(SRC_PATH),$(MODULE_FILE)))
+MODULE_BIN = $(addprefix $(BIN_PATH),attr)
+build:$(MODULE_BIN)
+$(OBJ_PATH)%.o :$(SRC_PATH)%.c
+    $(CC) $(CFLAG) $< -o $@ 
+$(MODULE_DEP): $(MODULE_SRC)
+    @set -e; rm -f $@;\
+    $(CC) -MM $(CFLAG) $< > $@.$$$$;\
+    sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@;\
+    rm -f $@.$$$$
+sinclude $(MODULE_DEP) 
+
+$(MODULE_BIN):$(MODULE_OBJ)
+    gcc $^ -o $@
+    
+clean:
+    -rm  $(MODULE_OBJ)  $(MODULE_DEP) $(MODULE_BIN)
+rebuild:clean build
+        
+.PHONY:rebuild clean build
+{% endhighlight %}
+
+现在，基本没有问题了。通常对于MODULE_BIN中的attr,会根据你当前模块的名称进行确定，并极少改变，而对于该模块的C文件的新增和删除，则直接在MODULE_FILE中可以直接删减。由此，上述可以直接作为一个模板使用。虽然这并不是一个最优设计。
+
+>鬼话：需要注意，上述的设计，仅是针对一个独立模块的开发。对于诸如很多开源代码的Makefile设计，由于有不同的诉求重点，会有所不同，第四部分，会进行讨论。
+
+
+上一篇：[任意存储空间结构的设计](/candcpp/ghost-c-lang-7.html)
+
+下一篇：暂无
