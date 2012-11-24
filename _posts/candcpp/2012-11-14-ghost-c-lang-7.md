@@ -1027,4 +1027,4 @@ restrict 针对的指针所指向的存储空间。约束这个空间，只能�
 
 上一篇：[数组，指针，字符串（下）](/candcpp/ghost-c-lang-6-3.html)
 
-下一篇：[完善MVC的DEMO，闲话MAKEFILE](/candcpp/ghost-c-lang-8.html)
+下一篇：[完善MVC的DEMO，闲话MAKEFILE（上）](/candcpp/ghost-c-lang-8-1.html)
