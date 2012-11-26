@@ -51,3 +51,8 @@ title: Mac OS X
   * [Sublime Text 2](http://www.sublimetext.com/)
   * [MacVim](http://code.google.com/p/macvim/)
   * [Textmate](http://macromates.com/)
+* 语言环境
+  * [Python](http://python.org)
+    * brew install python
+  * [Ruby](http://www.ruby-lang.org)
+  * [NodeJs](http://nodejs.org)
