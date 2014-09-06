@@ -1,5 +1,5 @@
 jQuery(document).ready(function($) {
-	$("#charpter ul").toc({
+	$("#charpter").toc({
         "selectors": "h1,h2,h3",
         "container": "#post",
         "smoothScrolling": true,
