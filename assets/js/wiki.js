@@ -1,5 +1,5 @@
 jQuery(document).ready(function($) {
-	$("#charpter ul").toc(
+	$("#charpter ul").toc({
         "selectors": "h1,h2,h3",
         "container": "#post",
         "smoothScrolling": true,
@@ -7,5 +7,5 @@ jQuery(document).ready(function($) {
         "anchorName": function (i, heading, prefix) {
             return prefix + i;
         }
-	);
+    });
 });
