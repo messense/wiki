@@ -9,8 +9,7 @@ title: Mac OS X
 
 * [Homebrew](http://mxcl.github.com/homebrew/) - The missing package manager for OS X
 * [MacPorts](http://www.macports.org) - An open-source community initiative to design an easy-to-use system for compiling, installing, and upgrading either command-line, X11 or Aqua based open-source software on the Mac OS X operating system.
-* [pythonbrew](https://github.com/utahta/pythonbrew) - Mac python 多版本管理器
-  * [pythonbrew 中文文档](http://pythonbrew.readthedocs.org/en/latest/)
+* [pyenv](https://github.com/yyuu/pyenv) - Simple Python version management
 * [rvm](http://rvm.io) - Ruby 多版本管理器
 * [rbenv](https://github.com/sstephenson/rbenv) - 与 rvm 类似的 Ruby 多版本管理器
 
@@ -33,6 +32,7 @@ title: Mac OS X
 * 视频
   * [MPlayerX](http://mplayerx.org/) - 强大的视频播放软件
   * [SPlayer](http://www.splayer.org/) - 射手影音 Mac 版
+  * [VLC](http://www.videolan.org/vlc/) - VLC media player
 
 ## 网络
 
@@ -40,9 +40,9 @@ title: Mac OS X
   * [fakeThunder](http://martianz.cn/fakethunder) - 第三方迅雷离线下载软件
   * [Thunder](http://mac.xunlei.com) - 迅雷官方版
 * 代理
-  * [GoAgentX](https://github.com/ohdarling/GoAgentX) - GoAgent的图形化版
-  * [iSSH](http://macserve.org.uk/projects/issh/) - 将ssh转换为sock使用
-  * [iSSH-imporved](http://code.google.com/p/issh-improved/) - iSSH的第三方发进版本
+  * [GoAgentX](https://github.com/ohdarling/GoAgentX) - GoAgent 的 GUI 版
+  * [iSSH](http://macserve.org.uk/projects/issh/) - 将 SSH 转换为 SOCKS 代理使用
+  * [iSSH-imporved](http://code.google.com/p/issh-improved/) - iSSH 的第三方发进版本
   * [Proxychains Formula](https://github.com/lxneng/homebrew/commit/25da1bef5a9631315e078a5124c91ec785ff5efe) - 可以使终端命令用上代理，可用 Homebrew 安装
 
 ## 开发
@@ -51,8 +51,21 @@ title: Mac OS X
   * [Sublime Text 2](http://www.sublimetext.com/)
   * [MacVim](http://code.google.com/p/macvim/)
   * [Textmate](http://macromates.com/)
+* 集成开发环境(IDE)
+  * [Xcode](https://developer.apple.com/cn/xcode/) - OS X/iOS App 开发环境
+  * [PyCharm](http://www.jetbrains.com/pycharm/) - Python IDE & Django IDE for Web developers
 * 语言环境
   * [Python](http://python.org)
     * brew install python
   * [Ruby](http://www.ruby-lang.org)
   * [NodeJs](http://nodejs.org)
+* 数据库
+  * [MySQL](http://www.mysql.com/) - The world's most popular open source database
+    * brew install mysql
+  * [MongoDB](http://www.mongodb.org/)
+    * brew install mongodb
+  * [Redis](http://redis.io/) - Redis is an open source, BSD licensed, advanced key-value cache and store.
+    * brew install redis
+  * [Memcached](http://memcached.org/) - A distributed memory object caching system
+    * brew install memcached
+    * brew install libmemcached
